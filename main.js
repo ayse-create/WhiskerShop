@@ -168,18 +168,16 @@ async function purchaseProduct(productId) {
 async function checkoutCart() {
   const state = Store.getState();
   const cartItems = state.cart;
-  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0); // ← EKLE!
   
   if (cartItems.length === 0) {
     showToast('Sepetin boş!', { type: 'error', icon: '🛒' });
     return;
   }
 
-  // Sepeti boşalt
   cartItems.forEach((item) => Store.removeFromCart(item.productId));
   closeCart();
 
-  // İlk ürünü temsili seç
   const firstProduct = cartItems[0];
   const order = Store.createOrder(firstProduct);
   const coinsEarned = await runMiniGame(order, firstProduct, totalItems);
