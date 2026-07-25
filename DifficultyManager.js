@@ -7,7 +7,7 @@ export function getDifficultyConfig(orderNumber) {
   const n = Math.max(1, orderNumber);
 
   // Yol uzunluğu (piksel) - her siparişte kademeli uzar, bir tavana yaklaşır.
-  const roadLength = Math.min(2600 + (n - 1) * 420, 7200);
+  const roadLength = Math.min(2600 + (n - 1) * 480, 7500);
 
   // Engel yoğunluğu: yaklaşık her X pikselde bir engel grubu.
   const obstacleGap = Math.max(230 - (n - 1) * 9, 95);
