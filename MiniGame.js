@@ -205,9 +205,12 @@ export class MiniGame {
     const carY = this.car.y;
 
     this.obstacles.forEach((o) => {
-      if (o.passed) return;
+      if (o.passed) return; // ← BURASI DÜZELTİLDİ!
       const screenY = carY - (o.y - this.distanceTraveled);
-      if (screenY > CANVAS_H + 60) { o.passed = true; return; }
+      if (screenY > CANVAS_H + 60) { 
+        o.passed = true; 
+        return; 
+      }
       o._screenY = screenY;
       if (Math.abs(screenY - carY) < 34 && o.lane === this.car.lane) {
         o.passed = true;
@@ -268,7 +271,7 @@ export class MiniGame {
     }
 
     this.obstacles.forEach((o) => {
-      if (o._screenY === undefined || o._screenY < -60 || o._screenY > CANVAS_H + 60) return;
+      if (o.passed || o._screenY === undefined || o._screenY < -60 || o._screenY > CANVAS_H + 60) return;
       const realY = o.y;
       o.y = o._screenY;
       o.draw(ctx);
