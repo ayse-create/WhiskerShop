@@ -189,13 +189,13 @@ async function checkoutCart() {
   showToast(`Teslimat tamamlandı! +${coinsEarned} 🐾 kazandın.`, { type: 'success', icon: '🎉' });
 }
 
-function runMiniGame(order, product) {
+function runMiniGame(order, product, totalItems) {
   return new Promise((resolve) => {
-    // eslint-disable-next-line no-new
     new MiniGame({
       mountEl: gameMountEl,
       orderNumber: order.orderNumber,
       product,
+      totalItems: totalItems,
       onComplete: (coins) => resolve(coins),
     });
   });
