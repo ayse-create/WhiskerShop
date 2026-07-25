@@ -167,18 +167,26 @@ async function purchaseProduct(productId) {
 
 async function checkoutCart() {
   const state = Store.getState();
-  const queue = [];
-  state.cart.forEach((item) => {
-    for (let i = 0; i < item.qty; i++) queue.push(item.productId);
-  });
-  // Sepeti hemen boşalt (görsel olarak "sipariş verildi" hissi versin)
-  [...state.cart].forEach((item) => Store.removeFromCart(item.productId));
+  const cartItems = state.cart;
+  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  
+  if (cartItems.length === 0) {
+    showToast('Sepetin boş!', { type: 'error', icon: '🛒' });
+    return;
+  }
+
+  // Sepeti boşalt
+  cartItems.forEach((item) => Store.removeFromCart(item.productId));
   closeCart();
 
-  for (const pid of queue) {
-    const success = await purchaseProduct(pid);
-    if (!success) break; // bakiye yetmezse kuyruğu durdur
-  }
+  // İlk ürünü temsili seç
+  const firstProduct = cartItems[0];
+  const order = Store.createOrder(firstProduct);
+  const coinsEarned = await runMiniGame(order, firstProduct, totalItems);
+  
+  Store.completeOrder(order.id, coinsEarned);
+  Store.credit(coinsEarned);
+  showToast(`Teslimat tamamlandı! +${coinsEarned} 🐾 kazandın.`, { type: 'success', icon: '🎉' });
 }
 
 function runMiniGame(order, product) {
