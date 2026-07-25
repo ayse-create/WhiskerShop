@@ -1,0 +1,59 @@
+/* ===== WhiskerMarket Design Tokens ===== */
+:root {
+  /* Palette */
+  --cream: #FBF3E6;
+  --cream-soft: #FFFBF3;
+  --paper: #F3E6D3;
+  --ink: #2A1B2E;
+  --ink-soft: #5B4A63;
+  --plum: #2E1A3D;
+  --plum-deep: #1D0F29;
+  --marigold: #F2A93B;
+  --marigold-deep: #D98B1F;
+  --coral: #E15B3F;
+  --coral-deep: #C24429;
+  --whisker-green: #4C9A6A;
+  --whisker-green-deep: #357A50;
+  --line: #E4D3B8;
+
+  /* Typography */
+  --font-display: 'Baloo 2', 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* Radius */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* Shadow */
+  --shadow-sm: 0 2px 8px rgba(42, 27, 46, 0.08);
+  --shadow-md: 0 8px 24px rgba(42, 27, 46, 0.14);
+  --shadow-lg: 0 16px 48px rgba(42, 27, 46, 0.22);
+  --shadow-pop: 0 4px 0 rgba(0,0,0,0.15);
+
+  /* Z-index */
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

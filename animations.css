@@ -1,0 +1,29 @@
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.4s ease backwards; }
+
+@keyframes coinFloat {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-40px) scale(1.2); opacity: 0; }
+}
+.coin-float {
+  position: fixed;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  color: var(--marigold);
+  pointer-events: none;
+  z-index: 500;
+  animation: coinFloat 0.8s ease forwards;
+}
+
+@keyframes pawPop {
+  0% { transform: scale(0.6) rotate(-10deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(4deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); }
+}
+.paw-pop { animation: pawPop 0.4s ease; }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
