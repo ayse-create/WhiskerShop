@@ -16,6 +16,7 @@ export class MiniGame {
     this.mountEl = mountEl;
     this.product = product;
     this.onComplete = onComplete;
+    this.totalItems = totalItems;
     this.config = getDifficultyConfig(orderNumber);
 
     this.distanceTraveled = 0;
