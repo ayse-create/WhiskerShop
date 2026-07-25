@@ -65,3 +65,10 @@ export const PRODUCTS = [
   { id: 39, name: 'Büyük Tırmalama Ağacı', price: 150, category: 'ev', image: '39.png', rating: 4.8, badge: 'Çok Satan' },
   { id: 40, name: 'Lüks Kedi Evi (Isıtmalı)', price: 200, category: 'ev', image: '40.png', rating: 4.9, badge: 'Premium' }
 ];
+export function filterProducts({ category, query }) {
+  return PRODUCTS.filter((p) => {
+    const matchesCategory = !category || category === 'all' || p.category === category;
+    const matchesQuery = !query || p.name.toLocaleLowerCase('tr').includes(query.toLocaleLowerCase('tr'));
+    return matchesCategory && matchesQuery;
+  });
+}
