@@ -93,7 +93,7 @@
   margin: 0 var(--sp-3) var(--sp-3);
   border-radius: var(--r-md);
   overflow: hidden;
-  background: #faf9fc;
+  background: #f0f0f0;
   box-shadow: inset 0 0 0 3px rgba(207, 239, 255, 0.4);
 }
 #gameCanvas {
