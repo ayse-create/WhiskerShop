@@ -5,7 +5,7 @@ export class Coin {
     this.lane = lane;
     this.x = laneWidth * lane + laneWidth / 2;
     this.y = y;
-    this.value = value;
+    this.value = 1;
     this.radius = 13;
     this.collected = false;
     this.spinPhase = Math.random() * Math.PI * 2;
