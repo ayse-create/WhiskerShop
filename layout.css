@@ -57,12 +57,14 @@ img { max-width: 100%; display: block; }
 
 /* ===== Header ===== */
 .site-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-header);
-  background: var(--plum);
-  color: var(--cream-soft);
-  box-shadow: var(--shadow-md);
+  background: var(--gradient-pastel) !important;
+  color: var(--plum-deep);
+}
+.brand, .header-actions .icon-btn, .balance-pill {
+  color: var(--plum-deep);
+}
+.balance-pill {
+  background: rgba(255,255,255,0.25);
 }
 
 .header-inner {
