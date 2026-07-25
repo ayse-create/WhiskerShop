@@ -130,8 +130,8 @@ export class MiniGame {
       const freeLanes = [0, 1, 2].filter((l) => !blockedLanesHere.includes(l));
       if (freeLanes.length > 0) {
         const lane = freeLanes[Math.floor(Math.random() * freeLanes.length)];
-        const value = Math.floor(coinValueMin + Math.random() * (coinValueMax - coinValueMin + 1));
-        this.coins.push(new Coin({ lane, laneWidth, y: d, value }));
+        const value = 1; // Sabit 1
+this.coins.push(new Coin({ lane, laneWidth, y: d, value }));
       }
       d += coinGap * (0.8 + Math.random() * 0.4);
     }
@@ -234,13 +234,15 @@ export class MiniGame {
   }
 
   _onObstacleHit(o) {
-    this.hitCount += 1;
-    this.speedPenaltyTimer = 0.5;
-    this.car.registerHit();
-    Sound.crash();
-    this.popups.push({ text: 'Çarptı!', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
-    if (navigator.vibrate) navigator.vibrate(60);
-  }
+  this.hitCount += 1;
+  this.sessionCoins = Math.max(0, this.sessionCoins - 5); // -5 ceza
+  this.speedPenaltyTimer = 0.5;
+  this.car.registerHit();
+  Sound.crash();
+  this.popups.push({ text: '-5 🐾', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
+  o.passed = true; // Engel yok olur
+  if (navigator.vibrate) navigator.vibrate(60);
+}
 
   _onCoinCollect(c) {
     this.sessionCoins += c.value;
