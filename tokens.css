@@ -1,20 +1,21 @@
 /* ===== WhiskerMarket Design Tokens ===== */
 :root {
-  /* Palette */
-  --cream: #FBF3E6;
-  --cream-soft: #FFFBF3;
-  --paper: #F3E6D3;
-  --ink: #2A1B2E;
-  --ink-soft: #5B4A63;
   --plum: #2E1A3D;
   --plum-deep: #1D0F29;
+  --cream: #FFFBF3;
+  --cream-soft: #FFFBF3;
   --marigold: #F2A93B;
   --marigold-deep: #D98B1F;
   --coral: #E15B3F;
   --coral-deep: #C24429;
-  --whisker-green: #4C9A6A;
-  --whisker-green-deep: #357A50;
+  --ink: #2A1B2E;
+  --ink-soft: #5B4A63;
   --line: #E4D3B8;
+  --paper: #F3E6D3;
+
+  /* WhiskerSearch Pastel Gradient */
+  --gradient-pastel: linear-gradient(135deg, #CFEFFF, #D8C7FF, #FFD1E8);
+
 
   /* Typography */
   --font-display: 'Baloo 2', 'Fredoka', system-ui, sans-serif;
