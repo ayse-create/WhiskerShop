@@ -63,5 +63,5 @@ export const PRODUCTS = [
   { id: 37, name: '3 Katlı Tırmalama Kulesi', price: 95, category: 'ev', image: '37.png', rating: 4.9, badge: 'Amiral Gemisi' },
   { id: 38, name: 'Küçük Kedi Evi - Yumuşak', price: 80, category: 'ev', image: '38.png', rating: 4.5 },
   { id: 39, name: 'Büyük Tırmalama Ağacı', price: 150, category: 'ev', image: '39.png', rating: 4.8, badge: 'Çok Satan' },
-  { id: 40, name: 'Lüks Kedi Evi (Isıtmalı)', price: 200, category: 'ev', image: '40.png', rating: 4.9, badge: 'Premium' },
+  { id: 40, name: 'Lüks Kedi Evi (Isıtmalı)', price: 200, category: 'ev', image: '40.png', rating: 4.9, badge: 'Premium' }
 ];
