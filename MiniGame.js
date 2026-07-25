@@ -234,11 +234,11 @@ export class MiniGame {
 
   _onObstacleHit(o) {
     this.hitCount += 1;
-    this.sessionCoins = Math.max(0, this.sessionCoins - 5);
+    this.sessionCoins = Math.max(0, this.sessionCoins - 1);
     this.speedPenaltyTimer = 0.5;
     this.car.registerHit();
     Sound.crash();
-    this.popups.push({ text: '-5 🐾', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
+    this.popups.push({ text: '-1 🐾', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
     o.passed = true;
     if (navigator.vibrate) navigator.vibrate(60);
   }
