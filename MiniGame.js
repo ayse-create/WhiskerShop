@@ -103,10 +103,10 @@ export class MiniGame {
     this.obstacles = [];
     this.coins = [];
 
-    const baseDistance = 3000;
-    const totalDistance = baseDistance * Math.max(1, this.totalItems);
-    const obstacleGap = 150;
-    const coinGap = 100;
+   const baseDistance = 6000; // 2 kat uzun
+const totalDistance = baseDistance * Math.max(1, this.totalItems);
+const obstacleGap = 180;
+const coinGap = 120;
     let d = 500;
 
     while (d < totalDistance - 200) {
