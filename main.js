@@ -1,7 +1,4 @@
 // ===== main.js =====
-// Uygulamanın giriş noktası. state.js'i tek gerçek kaynak olarak kullanır,
-// mağaza UI'ını ve kargo mini oyununu birbirine bağlar.
-
 import { Store } from './state.js';
 import { PRODUCTS } from './products.js';
 import { renderCategoryChips, renderProductGrid } from './ShopView.js';
@@ -117,7 +114,8 @@ productGridEl.addEventListener('click', (e) => {
     actionBtn.classList.add('paw-pop');
     setTimeout(() => actionBtn.classList.remove('paw-pop'), 400);
   } else if (actionBtn.dataset.action === 'buy-now') {
-    purchaseProduct(productId);
+    const product = PRODUCTS.find(p => p.id === productId);
+    if (product) purchaseProduct(productId, 1);
   }
 });
 
@@ -138,7 +136,7 @@ cartFooterEl.addEventListener('click', (e) => {
 });
 
 // ---------- Satın alma akışı ----------
-async function purchaseProduct(productId) {
+async function purchaseProduct(productId, totalItems = 1) {
   if (isProcessingPurchase) return false;
   const product = PRODUCTS.find((p) => p.id === productId);
   if (!product) return false;
@@ -155,7 +153,7 @@ async function purchaseProduct(productId) {
   header.sayMascot('purchased');
   const order = Store.createOrder(product);
 
-  const coinsEarned = await runMiniGame(order, product);
+  const coinsEarned = await runMiniGame(order, product, totalItems);
 
   Store.completeOrder(order.id, coinsEarned);
   Store.credit(coinsEarned);
@@ -168,16 +166,18 @@ async function purchaseProduct(productId) {
 async function checkoutCart() {
   const state = Store.getState();
   const cartItems = state.cart;
-  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0); // ← EKLE!
+  const totalItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
   
   if (cartItems.length === 0) {
     showToast('Sepetin boş!', { type: 'error', icon: '🛒' });
     return;
   }
 
+  // Sepeti boşalt (görsel olarak)
   cartItems.forEach((item) => Store.removeFromCart(item.productId));
   closeCart();
 
+  // İlk ürünü temsili seç
   const firstProduct = cartItems[0];
   const order = Store.createOrder(firstProduct);
   const coinsEarned = await runMiniGame(order, firstProduct, totalItems);
