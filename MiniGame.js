@@ -12,7 +12,7 @@ const CANVAS_W = 420;
 const CANVAS_H = 620;
 
 export class MiniGame {
-  constructor({ mountEl, orderNumber, product, onComplete }) {
+  constructor({ mountEl, orderNumber, product, onComplete, totalItems = 1 }) {
     this.mountEl = mountEl;
     this.product = product;
     this.onComplete = onComplete;
@@ -23,8 +23,8 @@ export class MiniGame {
     this.sessionCoins = 0;
     this.hitCount = 0;
     this.speedPenaltyTimer = 0;
-    this.state = 'intro'; // intro | playing | result
-    this.popups = []; // {text, x, y, life, color}
+    this.state = 'intro';
+    this.popups = [];
 
     this._buildDom();
     this._buildEntities();
@@ -53,18 +53,13 @@ export class MiniGame {
           <div class="game-intro" data-el="intro">
             <div class="big-emoji">🚚</div>
             <h3>Teslimat Zamanı!</h3>
-            <p><strong>${this._escapeHtml(this.product.name)}</strong> siparişini eve götürmelisin.
-            Şeritler arasında geçiş yap, engellerden kaç, yoldaki kedi paralarını topla!</p>
+            <p><strong>${this._escapeHtml(this.product.name)}</strong> siparişini eve götürmelisin.</p>
             <button class="btn btn-primary" data-el="startBtn" style="font-size:15px;padding:14px 28px;">Teslimata Başla 🐾</button>
           </div>
           <div class="game-result hidden" data-el="result">
             <div class="big-emoji">🏠</div>
             <h3>Eve Ulaştı!</h3>
             <div class="earned"><span data-el="earnedAmount">0</span> 🐾</div>
-            <div class="breakdown">
-              <span data-el="hitInfo">0 çarpışma</span>
-            </div>
-            <p>Toplanan paralar bakiyene eklendi.</p>
             <button class="btn btn-primary" data-el="continueBtn" style="font-size:15px;padding:14px 28px;">Bakiyeye Ekle ve Devam Et</button>
           </div>
         </div>
@@ -74,7 +69,6 @@ export class MiniGame {
         </div>
         <div class="game-hint">
           <span class="kbd-hint"><kbd>←</kbd> <kbd>A</kbd> sola · <kbd>→</kbd> <kbd>D</kbd> sağa</span>
-          <span class="touch-hint">Şeritler arasında kaydırarak veya butonlarla geç</span>
         </div>
       </div>
     `;
@@ -88,7 +82,6 @@ export class MiniGame {
       continueBtn: wrap.querySelector('[data-el="continueBtn"]'),
       hudCoins: wrap.querySelector('[data-el="hudCoins"]'),
       earnedAmount: wrap.querySelector('[data-el="earnedAmount"]'),
-      hitInfo: wrap.querySelector('[data-el="hitInfo"]'),
       btnLeft: wrap.querySelector('[data-el="btnLeft"]'),
       btnRight: wrap.querySelector('[data-el="btnRight"]'),
     };
@@ -110,11 +103,14 @@ export class MiniGame {
     this.obstacles = [];
     this.coins = [];
 
-    const { roadLength, obstacleGap, comboObstacleChance, coinGap, coinValueMin, coinValueMax } = this.config;
-    let d = 500; // ilk güvenli bölge
+    const baseDistance = 3000;
+    const totalDistance = baseDistance * Math.max(1, this.totalItems);
+    const obstacleGap = 150;
+    const coinGap = 100;
+    let d = 500;
 
-    while (d < roadLength - 200) {
-      const blockCount = Math.random() < comboObstacleChance ? 2 : 1;
+    while (d < totalDistance - 200) {
+      const blockCount = Math.random() < 0.3 ? 2 : 1;
       const lanes = this._pickLanes(blockCount);
       const jitter = (Math.random() - 0.5) * obstacleGap * 0.3;
       lanes.forEach((lane) => {
@@ -124,20 +120,19 @@ export class MiniGame {
     }
 
     d = 300;
-    while (d < roadLength - 100) {
+    while (d < totalDistance - 100) {
       const blockedLanesHere = this.obstacles
         .filter((o) => Math.abs(o.y - d) < 60)
         .map((o) => o.lane);
       const freeLanes = [0, 1, 2].filter((l) => !blockedLanesHere.includes(l));
       if (freeLanes.length > 0) {
         const lane = freeLanes[Math.floor(Math.random() * freeLanes.length)];
-        const value = 1; // Sabit 1
-this.coins.push(new Coin({ lane, laneWidth, y: d, value }));
+        this.coins.push(new Coin({ lane, laneWidth, y: d, value: 1 }));
       }
       d += coinGap * (0.8 + Math.random() * 0.4);
     }
 
-    this.finishLineY = roadLength;
+    this.finishLineY = totalDistance;
   }
 
   _pickLanes(count) {
@@ -235,21 +230,21 @@ this.coins.push(new Coin({ lane, laneWidth, y: d, value }));
   }
 
   _onObstacleHit(o) {
-  this.hitCount += 1;
-  this.sessionCoins = Math.max(0, this.sessionCoins - 5); // -5 ceza
-  this.speedPenaltyTimer = 0.5;
-  this.car.registerHit();
-  Sound.crash();
-  this.popups.push({ text: '-5 🐾', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
-  o.passed = true; // Engel yok olur
-  if (navigator.vibrate) navigator.vibrate(60);
-}
+    this.hitCount += 1;
+    this.sessionCoins = Math.max(0, this.sessionCoins - 5);
+    this.speedPenaltyTimer = 0.5;
+    this.car.registerHit();
+    Sound.crash();
+    this.popups.push({ text: '-5 🐾', x: this.car.x, y: this.car.y - 40, life: 0.7, color: '#E15B3F' });
+    o.passed = true;
+    if (navigator.vibrate) navigator.vibrate(60);
+  }
 
   _onCoinCollect(c) {
-    this.sessionCoins += c.value;
+    this.sessionCoins += 1;
     this.el.hudCoins.textContent = this.sessionCoins;
     Sound.coin();
-    this.popups.push({ text: `+${c.value}`, x: c.x, y: this.car.y - 30, life: 0.6, color: '#F2A93B' });
+    this.popups.push({ text: '+1', x: c.x, y: this.car.y - 30, life: 0.6, color: '#F2A93B' });
   }
 
   _render() {
@@ -312,7 +307,6 @@ this.coins.push(new Coin({ lane, laneWidth, y: d, value }));
     Sound.victory();
     this.el.result.classList.remove('hidden');
     this.el.earnedAmount.textContent = this.sessionCoins;
-    this.el.hitInfo.textContent = this.hitCount > 0 ? `${this.hitCount} çarpışma yaşandı` : 'Hiç çarpışma yok — kusursuz sürüş! 🌟';
   }
 
   _finish() {
